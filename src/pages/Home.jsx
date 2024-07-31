@@ -1,8 +1,7 @@
 import React from 'react'
 import CustomCard from '../components/CustomCard';
-import { Col, Layout, Row, Typography } from "antd";
-const { Header, Content, Footer, Sider } = Layout;
-const { Title } = Typography;
+import { Col, Layout, Row } from "antd";
+const { Content} = Layout;
 const projectList = [
     {
         title: "Ask a Question",
@@ -15,9 +14,9 @@ const projectList = [
         link: "/imgcontentgeneration",
     },
     {
-        title: "Test",
-        description: "Test",
-        link: "/test",
+        title: "PDF Chat Bot",
+        description: "This application allows you to interact with PDF documents in a conversational manner. Upload your PDF file and ask questions about its content. The bot will provide answers based on the text within the document.",
+        link: "/pdfchatbot",
     },
     {
         title: "Test",
@@ -34,9 +33,7 @@ const projectList = [
 const Home = () => {
     return (
         <Layout>
-            <Header style={{ paddingLeft: 24}}>
-                <Title level={4} style={{color: 'white', padding: 0}}>List of All Application</Title>
-            </Header>
+           
             <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                 <Row gutter={[40, 40]} justify="start">
                     {projectList.map((project) => (

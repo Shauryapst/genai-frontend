@@ -8,8 +8,6 @@ const SimpleQnA = () => {
     const [conversation, setConversation] = useState([]);
 
     const handleClick = async () => {
- 
-
         let config = {
             url: '/v1/ask',
             method: 'POST',
@@ -17,7 +15,6 @@ const SimpleQnA = () => {
                 question
             }
         };
-
         const response = await apiHelper.sendLocal(config);
         setConversation(prevConversation => [{ isAnswer: false, text: question }, { isAnswer: true, text: response.data.answer }, ...prevConversation ]);
         setQuestion('');

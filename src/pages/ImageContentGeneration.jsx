@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
-import { Button, Flex, Image, message, Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+import { Button, Flex, Image, Input, message, Space, Upload } from "antd";
 import apiHelper from "../helpers/api.helper";
-import ReactMarkdown from 'react-markdown';
+import Markdown from "../components/Markdown";
 const { Dragger } = Upload;
 
 const ImageContentGeneration = () => {
@@ -11,6 +11,7 @@ const ImageContentGeneration = () => {
     const [fileList, setFileList] = useState([]);
     const [imgFile, setImgFile] = useState();
     const [textResponse, setTextResponse] = useState();
+    const [question, setQuestion] = useState();
 
     const getBase64 = (img, callback) => {
         const reader = new FileReader();
@@ -24,8 +25,6 @@ const ImageContentGeneration = () => {
         fileList,
     };
     const handleChange = (info) => {
-        const { status } = info.file;
-
         if (info.fileList.length > 0) {
             setImgFile(info.fileList[0].originFileObj);
             getBase64(info.fileList[0].originFileObj, (url) => {
@@ -47,7 +46,7 @@ const ImageContentGeneration = () => {
     };
     const handleUpload = async () => {
         const formData = new FormData();
-        formData.append('question', 'lol');
+        formData.append('question', question);
         formData.append('image', imgFile);
         const response = await apiHelper.sendLocal({
             url: "/v1/upload/image",
@@ -57,7 +56,7 @@ const ImageContentGeneration = () => {
             },
             payload: formData
         });
-        if (response.status && response.status == 200) {
+        if (response.status && response.status === 200) {
             console.log(response);
             setTextResponse(response.data.answer);
         } else {
@@ -76,7 +75,6 @@ const ImageContentGeneration = () => {
     };
     return (
         <>
-
             <Flex vertical={true} gap='middle' justify='center' align="center">
                 <Dragger
                     {...props}
@@ -106,8 +104,18 @@ const ImageContentGeneration = () => {
                 >
                     {loading ? "Uploading" : "Generate Content"}
                 </Button>
+                
+                <Space direction='vertical' size="middle" style={{ width: '100%', padding: '10px' }}>
+                    <Space.Compact style={{ width: '100%' }}>
+                        <Input
+                            placeholder="Ask a question"
+                            value={question}
+                            onChange={(e) => setQuestion(e.target.value)}
+                        />
+                    </Space.Compact>
+                </Space>
                 <div style={{ flex: 1, overflowY: 'auto', padding: '10px', border: '1px solid #e8e8e8' }}>
-                    <ReactMarkdown>{textResponse}</ReactMarkdown>
+                    <Markdown text={textResponse} />
                 </div>
 
             </Flex>
